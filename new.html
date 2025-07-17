@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple DMs</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    #chat-container {
+      transition: background 0.3s ease-in-out;
+    }
+    .chat-bubble {
+      padding: 0.5rem 1rem;
+      background: #e2e8f0;
+      border-radius: 1rem;
+      max-width: 75%;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-xl mx-auto mt-10 p-4 shadow-lg rounded-lg" id="chat-container" style="background-color: #ffffff;">
+    <div class="mb-2">
+      <label for="username" class="block text-sm font-bold mb-1">Enter Your Name:</label>
+      <input id="username" type="text" placeholder="Your name..." class="w-full mb-3 p-2 border rounded" />
+
+      <label for="bg-picker" class="block text-sm font-bold mb-1">Choose Chat Background:</label>
+      <select id="bg-picker" class="w-full p-2 border rounded">
+        <option value="#ffffff">White</option>
+        <option value="#ffccf9">Pink</option>
+        <option value="#d0f0fd">Sky Blue</option>
+        <option value="url('https://i.imgur.com/Qs9eUjT.jpg')">MySpace Theme (Image)</option>
+      </select>
+    </div>
+
+    <div id="messages" class="h-96 overflow-y-scroll space-y-2 p-2 border border-gray-200 rounded bg-opacity-60"></div>
+
+    <input id="chat-input" type="text" placeholder="Type your message..."
+      class="w-full mt-3 p-2 border border-gray-300 rounded" />
+  </div>
+
+  <script>
+    const messagesDiv = document.getElementById('messages');
+    const chatInput = document.getElementById('chat-input');
+    const bgPicker = document.getElementById('bg-picker');
+    const chatContainer = document.getElementById('chat-container');
+    const usernameInput = document.getElementById('username');
+
+    // Send message on Enter key
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && chatInput.value.trim()) {
+        const msg = chatInput.value.trim();
+        const user = usernameInput.value.trim() || 'Anonymous';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble bg-blue-100';
+        bubble.innerHTML = `<strong>${user}:</strong> ${msg}`;
+
+        messagesDiv.appendChild(bubble);
+        chatInput.value = '';
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    });
+
+    // Change background
+    bgPicker.addEventListener('change', (e) => {
+      const val = e.target.value;
+      if (val.startsWith('url')) {
+        chatContainer.style.background = val;
+        chatContainer.style.backgroundSize = 'cover';
+      } else {
+        chatContainer.style.background = val;
+      }
+    });
+  </script>
+</body>
+</html>
